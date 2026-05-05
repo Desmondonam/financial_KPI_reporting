@@ -1,0 +1,5 @@
+outs:
+- md5: e4fb3f2e3dd1dcc16c7efdcf749cc84c
+  size: 1782281620
+  hash: md5
+  path: rejected_2007_to_2018Q4.csv

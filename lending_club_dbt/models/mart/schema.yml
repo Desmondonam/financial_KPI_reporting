@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: mart_monthly_originations
+    description: "Monthly loan origination volume — count and USD amount by issue month."
+    columns:
+      - name: month
+        description: "Issue month (e.g. Dec-2015)."
+        tests: [not_null]
+      - name: loan_count
+        description: "Number of loans originated in this month."
+        tests: [not_null]
+      - name: total_originated_usd
+        description: "Total USD value of loans originated in this month."
+        tests: [not_null]
+
+  - name: mart_default_rate_by_grade
+    description: "Default rate broken down by Lending Club loan grade (A–G)."
+    columns:
+      - name: grade
+        description: "Loan grade."
+        tests:
+          - not_null
+          - unique
+      - name: default_rate_pct
+        description: "Percentage of loans in this grade that defaulted or were charged off."
+
+  - name: mart_avg_int_rate_by_state
+    description: "Average interest rate and loan volume by US state."
+    columns:
+      - name: state
+        description: "Two-letter US state abbreviation."
+        tests:
+          - not_null
+          - unique
+      - name: avg_interest_rate_pct
+        description: "Average interest rate (%) for loans in this state."
+      - name: loan_count
+        description: "Total loans in this state."
+        tests: [not_null]

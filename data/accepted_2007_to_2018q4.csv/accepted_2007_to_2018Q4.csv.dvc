@@ -1,0 +1,5 @@
+outs:
+- md5: 40d0463a883c602e3732b5f821a3dac7
+  size: 1675133810
+  hash: md5
+  path: accepted_2007_to_2018Q4.csv

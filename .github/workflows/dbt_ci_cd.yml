@@ -1,0 +1,87 @@
+name: dbt CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  dbt-ci:
+    name: dbt test & run
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: lending_club
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_NAME: lending_club
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      # ── Step 1: seed DB & run Great Expectations ──────────────────────────
+      - name: Seed PostgreSQL & validate with Great Expectations
+        run: python scripts/ci_seed.py
+
+      - name: Upload GE validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: great-expectations-validation-report
+          path: reports/validation_report.html
+
+      # ── Step 2: dbt transformations ───────────────────────────────────────
+      - name: Install dbt packages
+        working-directory: lending_club_dbt
+        run: dbt deps
+        env:
+          DBT_PROFILES_DIR: "."
+
+      - name: dbt run
+        working-directory: lending_club_dbt
+        run: dbt run --target ci --profiles-dir .
+        env:
+          DBT_PROFILES_DIR: "."
+
+      - name: dbt test
+        working-directory: lending_club_dbt
+        run: dbt test --target ci --profiles-dir .
+        env:
+          DBT_PROFILES_DIR: "."
+
+      # ── Upload dbt artifacts ──────────────────────────────────────────────
+      - name: Upload dbt artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dbt-artifacts
+          path: |
+            lending_club_dbt/target/manifest.json
+            lending_club_dbt/target/run_results.json

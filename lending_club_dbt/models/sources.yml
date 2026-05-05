@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: "Raw Lending Club loan data ingested from the 2007–2018 CSV export."
+    tables:
+      - name: lending_club_loans
+        description: "100k-row subset of Lending Club accepted loan applications."
+        columns:
+          - name: id
+            description: "Unique loan identifier."
+          - name: loan_amnt
+            description: "Requested loan amount."
+            tests:
+              - not_null
+          - name: int_rate
+            description: "Loan interest rate (%)."
+            tests:
+              - not_null
+          - name: grade
+            description: "LC-assigned loan grade (A–G)."
+          - name: loan_status
+            description: "Current status of the loan."
+          - name: issue_d
+            description: "Month/year the loan was issued (e.g. Dec-2015)."
+          - name: addr_state
+            description: "Two-letter US state abbreviation."

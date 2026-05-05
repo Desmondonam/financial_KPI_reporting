@@ -1,0 +1,27 @@
+name: lending_club_dbt
+version: "1.0.0"
+config-version: 2
+
+profile: lending_club_dbt
+
+model-paths: ["models"]
+seed-paths:  ["seeds"]
+test-paths:  ["tests"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  lending_club_dbt:
+    staging:
+      +materialized: view
+      +schema: staging
+    mart:
+      +materialized: table
+      +schema: mart
+
+seeds:
+  lending_club_dbt:
+    lending_club_loans:
+      +schema: raw
