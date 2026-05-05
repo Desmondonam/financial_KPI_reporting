@@ -6,28 +6,30 @@ models:
     columns:
       - name: loan_id
         description: "Unique loan identifier."
-        tests:
+        data_tests:
           - not_null
           - unique
 
       - name: loan_amount
         description: "Requested loan amount in USD."
-        tests:
+        data_tests:
           - not_null
 
       - name: interest_rate
         description: "Loan interest rate (%)."
-        tests:
+        data_tests:
           - not_null
 
       - name: grade
         description: "LC-assigned loan grade."
-        tests:
+        data_tests:
           - accepted_values:
-              values: ["A", "B", "C", "D", "E", "F", "G"]
+              arguments:
+                values: ["A", "B", "C", "D", "E", "F", "G"]
 
       - name: is_default
         description: "1 if loan defaulted or was charged-off, else 0."
-        tests:
+        data_tests:
           - accepted_values:
-              values: [0, 1]
+              arguments:
+                values: [0, 1]

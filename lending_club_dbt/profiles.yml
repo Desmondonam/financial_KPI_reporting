@@ -4,7 +4,7 @@ lending_club_dbt:
     dev:
       type: postgres
       host:     "{{ env_var('DB_HOST', 'localhost') }}"
-      port:     "{{ env_var('DB_PORT', '5432') | int }}"
+      port:     "{{ env_var('DB_PORT', '5433') | int }}"
       dbname:   "{{ env_var('DB_NAME', 'lending_club') }}"
       user:     "{{ env_var('DB_USER', 'postgres') }}"
       password: "{{ env_var('DB_PASSWORD', 'postgres') }}"

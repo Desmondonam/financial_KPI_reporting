@@ -6,20 +6,20 @@ models:
     columns:
       - name: month
         description: "Issue month (e.g. Dec-2015)."
-        tests: [not_null]
+        data_tests: [not_null]
       - name: loan_count
         description: "Number of loans originated in this month."
-        tests: [not_null]
+        data_tests: [not_null]
       - name: total_originated_usd
         description: "Total USD value of loans originated in this month."
-        tests: [not_null]
+        data_tests: [not_null]
 
   - name: mart_default_rate_by_grade
     description: "Default rate broken down by Lending Club loan grade (A–G)."
     columns:
       - name: grade
         description: "Loan grade."
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: default_rate_pct
@@ -30,11 +30,11 @@ models:
     columns:
       - name: state
         description: "Two-letter US state abbreviation."
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: avg_interest_rate_pct
         description: "Average interest rate (%) for loans in this state."
       - name: loan_count
         description: "Total loans in this state."
-        tests: [not_null]
+        data_tests: [not_null]
